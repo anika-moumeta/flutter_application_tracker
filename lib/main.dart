@@ -1,31 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String _displayText = "Press the button";
+  void _changeText() {
+    setState(() {
+      _displayText = "Button pressed";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("Tracker Sheet"),
-          backgroundColor: const Color.fromARGB(255, 101, 102, 190),
-        ),
         body: Center(
-          child: Text(
-            "Hello World!",
-            style: TextStyle(
-              fontFamily: GoogleFonts.monoton().fontFamily,
-              fontSize: 40,
-              color: const Color.fromARGB(255, 208, 12, 140),
-            ),
+          child: Column(
+            children: [
+              Text(_displayText, style: TextStyle(fontSize: 30)),
+              ElevatedButton(
+                onPressed: _changeText,
+                child: Text("Press", style: TextStyle(color: Colors.black)),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blueAccent),
+                  shadowColor: MaterialStateProperty.all(Colors.blueGrey),
+                ),
+              ),
+            ],
           ),
         ),
       ),
