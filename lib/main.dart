@@ -4,71 +4,69 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _isDarkMode = true;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tracker Sheet',
-      home: AnimatedContainerExample(),
+      theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(),
+      home: SettingsScreen(
+        isDarkMode: _isDarkMode,
+        onThemeChanged: (bool value) {
+          setState(() {
+            _isDarkMode = value;
+          });
+        },
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class AnimatedContainerExample extends StatefulWidget {
-  @override
-  _AnimatedContainerExampleState createState() =>
-      _AnimatedContainerExampleState();
-}
-
-class _AnimatedContainerExampleState extends State<AnimatedContainerExample> {
-  bool _isChanged = false;
+class SettingsScreen extends StatelessWidget {
+  final bool isDarkMode;
+  final ValueChanged<bool> onThemeChanged;
+  const SettingsScreen({
+    super.key,
+    required this.isDarkMode,
+    required this.onThemeChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 246, 146, 255),
       appBar: AppBar(
-        title: Column(
-          children: [
-            SizedBox(height: 30),
-            Text(
-              'Animated Container',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-            ),
-          ],
-        ),
-        backgroundColor: const Color.fromARGB(255, 246, 146, 255),
-        centerTitle: true,
-      ),
-
-      body: Center(
-        child: AnimatedContainer(
-          duration: Duration(seconds: 1),
-          curve: Curves.easeInOut,
-          width: _isChanged ? 300 : 200,
-          height: _isChanged ? 300 : 200,
-
-          decoration: BoxDecoration(
-            color:
-                _isChanged
-                    ? const Color.fromARGB(255, 117, 17, 17)
-                    : const Color.fromARGB(255, 24, 87, 139),
-            borderRadius: BorderRadius.circular(_isChanged ? 100 : 0),
+        title: const Text(
+          'Settings',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 208, 165, 33),
           ),
         ),
+        centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _isChanged = !_isChanged;
-          });
-        },
-        child: Icon(Icons.play_arrow),
-        backgroundColor: const Color.fromARGB(255, 16, 61, 97),
-        foregroundColor: Colors.white,
+      body: ListView(
+        children: [
+          ListTile(
+            title: const Text(
+              'Dark Mode',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 208, 165, 33),
+              ),
+            ),
+            trailing: Switch(value: isDarkMode, onChanged: onThemeChanged),
+          ),
+        ],
       ),
     );
   }
