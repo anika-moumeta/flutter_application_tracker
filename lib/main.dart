@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-void main() {
+main() {
   runApp(MyApp());
 }
 
@@ -9,67 +10,223 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: HomePage());
+    return MaterialApp(home: HomeScreen(), debugShowCheckedModeBanner: false);
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  final List<String> imageLinks = [
-    "https://onestep4ward.com/wp-content/uploads/2011/08/dreamstime_xxl_55742473-1536x1207.jpg",
-    "https://cdn.dhakapost.com/media/imgAll/BG/2021October/bagerhat-20211017170638.jpg",
-    "https://cdn.dhakapost.com/media/imgAll/BG/2021October/sreemangal-20211017170532.jpg",
-    "https://cdn.dhakapost.com/media/imgAll/BG/2021October/kuakata-20211017170353.jpg",
-    "https://cdn.dhakapost.com/media/imgAll/BG/2021October/tanguar-20211017170319.jpg",
-    "https://cdn.dhakapost.com/media/imgAll/BG/2021October/cover-20211017171031.jpg",
-    "https://th.bing.com/th/id/OIP.Sylw2IWh00Y_9jNiEq9N6gHaE_?w=266&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
-    "https://th.bing.com/th/id/OIP.GYc0OVKYtf7WhYgfVbyYNwAAAA?rs=1&pid=ImgDetMain",
-    "https://nijhoom.com/wp-content/uploads/2021/03/sonargaon-museum-boro-sardar-bari-hall-768-o-1.jpg",
-    "https://th.bing.com/th/id/R.babdffcb77c5cee460d899d118e56d10?rik=Y1Zp8E9q0G1P3g&pid=ImgRaw&r=0",
-    "https://th.bing.com/th/id/R.1a9623303e1d6b087dfcf4e3d99d43f8?rik=jtD%2bMxD4F7O8%2fw&pid=ImgRaw&r=0",
-    "https://cinebuzztimes.com/wp-content/uploads/2022/04/paharpur.jpg",
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        backgroundColor: const Color.fromARGB(255, 221, 49, 58),
-        title: Center(
-          child: Text(
-            "Places To Visit In BD",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        title: Text(
+          "Animal Lovers",
+          style: TextStyle(
+            fontSize: 25,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontFamily: GoogleFonts.poppins().fontFamily,
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 38, 90, 101),
+      ),
+      drawer: NaviDrawer(),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Home Screen",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: const Color.fromARGB(255, 38, 90, 101),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Image.asset(
+                  "assets/images/cat1.jpg",
+                  fit: BoxFit.cover,
+                  height: 600,
+                  width: 500,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class NaviDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 255, 199, 223),
+            ),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/girl.png"),
+                  radius: 30,
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Anika Afrin Moumeta',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: const Color.fromARGB(255, 218, 93, 93),
+                    fontFamily: GoogleFonts.amarante().fontFamily,
+                  ),
+                ),
+                Text(
+                  'Student | Daffodil International University | Animal Lover',
+                  style: TextStyle(fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text("Home"),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.camera),
+            title: Text("Animals"),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AnimalScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.info),
+            title: Text("About Us"),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutUsScreen()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AnimalScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Animals",
+          style: TextStyle(
+            fontSize: 25,
+            fontFamily: GoogleFonts.poppins().fontFamily,
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: GridView.builder(
-          itemCount: imageLinks.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Wild Animals",
+            style: TextStyle(
+              fontSize: 20,
+              color: const Color.fromARGB(255, 192, 148, 4),
+              fontWeight: FontWeight.bold,
+              fontFamily: GoogleFonts.poppins().fontFamily,
+            ),
           ),
-          itemBuilder: (context, index) {
-            return Container(
-              //height: 400,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                image: DecorationImage(
-                  image: NetworkImage(imageLinks[index]),
-                  fit: BoxFit.cover,
-                ),
+          SizedBox(height: 10),
+          Image.asset(
+            "assets/images/tiger.jpg",
+            fit: BoxFit.cover,
+            height: 600,
+            width: 500,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AboutUsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "About Us",
+          style: TextStyle(
+            fontSize: 25,
+            fontFamily: GoogleFonts.poppins().fontFamily,
+          ),
+        ),
+      ),
+      body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Animal Lovers",
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: const Color.fromARGB(255, 38, 90, 101),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: GoogleFonts.poppins().fontFamily,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Image.asset(
+                    "assets/images/cat.jpg",
+                    fit: BoxFit.cover,
+                    height: 400,
+                    width: 500,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "We are a group of animal lovers who are passionate about wildlife conservation and animal welfare. Our mission is to raise awareness about the importance of protecting animals and their habitats. We believe that every animal deserves a chance to live in a safe and healthy environment.",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: const Color.fromARGB(255, 38, 90, 101),
+                      fontFamily: GoogleFonts.poppins().fontFamily,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
-            );
-          },
+            ),
+          ],
         ),
       ),
     );
