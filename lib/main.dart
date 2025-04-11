@@ -1,69 +1,90 @@
 import 'package:flutter/material.dart';
 
-main() {
-  runApp(MyApp());
+void main() {
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomeScreen(), debugShowCheckedModeBanner: false);
+    return MaterialApp(
+      title: 'Tracker Sheet',
+      home: SwipeListScreen(),
+      debugShowCheckedModeBanner: false,
+    );
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class SwipeListScreen extends StatefulWidget {
+  @override
+  _SwipeListScreenState createState() => _SwipeListScreenState();
+}
+
+class _SwipeListScreenState extends State<SwipeListScreen> {
+  List<String> items = List.generate(20, (index) => 'Ingredient ${index + 1}');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 187, 230, 241),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 250, 188, 224),
-        elevation: 50,
-        title: Row(
-          children: [
-            CircleAvatar(
-              backgroundImage: AssetImage("assets/images/girl.png"),
-              radius: 25,
-            ),
-            SizedBox(width: 15), // optional spacing
-            Text("My Profile", style: TextStyle(fontWeight: FontWeight.bold)),
-          ],
+        title: Text('"Cooking Ingredients"'),
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
         ),
-        actions: [
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
-          IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-        ],
+        centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 220, 115, 9),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Home Screen",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 140, 44, 15),
+      body: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          final item = items[index];
+
+          return Dismissible(
+            key: Key(item),
+            background: Container(
+              color: const Color.fromARGB(255, 19, 83, 135),
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+
+              child: Icon(Icons.edit, color: Colors.white, size: 30),
+            ),
+            secondaryBackground: Container(
+              color: const Color.fromARGB(255, 180, 45, 35),
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Icon(Icons.delete, color: Colors.white, size: 30),
+            ),
+            onDismissed: (direction) {
+              if (direction == DismissDirection.endToStart) {
+                setState(() {
+                  items.removeAt(index);
+                });
+
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('$item deleted')));
+              } else if (direction == DismissDirection.startToEnd) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('Edit $item')));
+              }
+            },
+            child: Card(
+              elevation: 2,
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: ListTile(
+                title: Text(item),
+                //leading: Icon(Icons.list),
               ),
             ),
-            SizedBox(height: 8),
-            Text(
-              "Customize App Bar, Logo, Title, Action Button",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                color: Color.fromARGB(255, 65, 36, 26),
-              ),
-            ),
-            SizedBox(height: 20),
-            Image.asset("assets/images/cat1.jpg", width: 450, height: 500),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
