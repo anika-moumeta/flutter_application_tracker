@@ -1,67 +1,68 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+main() {
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Padding(
-            padding: const EdgeInsets.only(top: 40),
-            child: Center(
-              child: Text(
-                'Tracker Sheet - Custom Container',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          backgroundColor: Color.fromARGB(255, 160, 89, 89),
-        ),
-        backgroundColor: const Color.fromARGB(255, 160, 89, 89),
-        body: const Center(child: CustomContainer()),
-      ),
-    );
+    return MaterialApp(home: HomeScreen(), debugShowCheckedModeBanner: false);
   }
 }
 
-class CustomContainer extends StatelessWidget {
-  const CustomContainer({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 5, 62, 108),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 10,
-            spreadRadius: 2,
-            offset: Offset(5, 5),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 250, 188, 224),
+        elevation: 50,
+        title: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: AssetImage("assets/images/girl.png"),
+              radius: 25,
+            ),
+            SizedBox(width: 15), // optional spacing
+            Text("My Profile", style: TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
+        actions: [
+          IconButton(icon: Icon(Icons.search), onPressed: () {}),
+          IconButton(icon: Icon(Icons.menu), onPressed: () {}),
         ],
       ),
-      child: const Text(
-        'Custom Container With Text Widget!',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 25,
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Home Screen",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 140, 44, 15),
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              "Customize App Bar, Logo, Title, Action Button",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                color: Color.fromARGB(255, 65, 36, 26),
+              ),
+            ),
+            SizedBox(height: 20),
+            Image.asset("assets/images/cat1.jpg", width: 450, height: 500),
+          ],
         ),
       ),
     );
