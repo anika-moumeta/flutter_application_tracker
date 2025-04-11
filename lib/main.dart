@@ -1,105 +1,105 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(const NavigationApp());
+  runApp(MyApp());
 }
 
-class NavigationApp extends StatelessWidget {
-  const NavigationApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const FirstScreen(),
-    );
-  }
-}
-
-class FirstScreen extends StatelessWidget {
-  const FirstScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset('assets/images/rain.jpg'),
-          Text(
-            "This is First Screen",
-            style: TextStyle(
-              fontFamily: GoogleFonts.lato().fontFamily,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: const Color.fromARGB(255, 203, 10, 74),
+      home: HomePage(),
+      theme: ThemeData(
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 159, 28, 128),
+            foregroundColor: Colors.white,
+            elevation: 2,
+            fixedSize: const Size.fromWidth(double.maxFinite),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SecondScreen()),
-              );
-            },
-            child: const Text('Go to Second Screen'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 214, 205, 202),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              textStyle: TextStyle(
-                fontFamily: GoogleFonts.lato().fontFamily,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: const Color.fromARGB(255, 203, 10, 74),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 }
 
-class SecondScreen extends StatelessWidget {
-  const SecondScreen({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  void _onPressedLoginButton() {
+    if (_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Login Successfull")));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset('assets/images/tree.jpg'),
-          Text(
-            "This is Second Screen",
-            style: TextStyle(
-              fontFamily: GoogleFonts.lato().fontFamily,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: const Color.fromARGB(255, 203, 10, 74),
-            ),
+      appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 159, 28, 128),
+        title: Center(
+          child: Text(
+            "Login page",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Go to First Screen'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 222, 215, 212),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              textStyle: TextStyle(
-                fontFamily: GoogleFonts.lato().fontFamily,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: const Color.fromARGB(255, 25, 12, 205),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              customTextFromField(hintText: "Enter Email", controller: _email),
+              const SizedBox(height: 30),
+              customTextFromField(hintText: "Password", controller: _password),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: _onPressedLoginButton,
+                child: Text("Log In"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  TextFormField customTextFromField({
+    required String hintText,
+    required TextEditingController controller,
+  }) {
+    return TextFormField(
+      decoration: InputDecoration(hintText: hintText),
+      validator: (String? value) {
+        if (value?.trim().isEmpty ?? true) {
+          return "Must Enter $hintText ";
+        }
+        return null;
+      },
+      controller: controller,
     );
   }
 }
